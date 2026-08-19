@@ -18,6 +18,7 @@ variable "yc_folder_id" {
 variable "vm_name" {
   description = "Имя ВМ"
   type        = string
+  default     = "task2-vm"
 }
 
 variable "zone" {
@@ -34,16 +35,19 @@ variable "image_id" {
 variable "cores" {
   description = "Количество ядер CPU"
   type        = number
+  default     = 2
 }
 
 variable "memory" {
   description = "Объём RAM в ГБ"
   type        = number
+  default     = 4
 }
 
 variable "boot_disk_size" {
   description = "Размер загрузочного диска, ГБ"
   type        = number
+  default     = 30
 }
 
 variable "subnet_id" {
