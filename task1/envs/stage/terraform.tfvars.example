@@ -1,0 +1,14 @@
+yc_cloud_id  = "xxx"
+yc_folder_id = "xxx"
+
+vm_name       = "stage-vm"
+zone          = "ru-central1-b"
+image_id      = "xxx"
+cores         = 4
+memory        = 8
+boot_disk_size = 50
+disk_size     = 100
+subnet_id     = "xxx"
+ssh_key       = "xxx"
+ssh_user      = "ubuntu"
+assign_public_ip = true
