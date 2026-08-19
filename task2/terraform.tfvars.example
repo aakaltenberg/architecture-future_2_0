@@ -1,0 +1,12 @@
+yc_cloud_id   = "b1gxxxxxxxxxxxxxxxx"
+yc_folder_id  = "b1gxxxxxxxxxxxxxxxx"
+vm_name       = "task2-vm"
+zone          = "ru-central1-a"
+image_id      = "fd8xxxxxxxxxxxxxxxx"
+cores         = 2
+memory        = 4
+boot_disk_size = 30
+subnet_id     = "e9bxxxxxxxxxxxxxxxx"
+ssh_key       = "ssh-rsa AAAA...your-public-key..."
+ssh_user      = "ubuntu"
+assign_public_ip = true
