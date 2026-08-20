@@ -1,0 +1,69 @@
+@startuml event-storming
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Event Storming – основные события и потоки
+
+actor "Регистратор" as reg
+actor "Врач" as doc
+actor "ИИ-система" as ai
+actor "Финансовый менеджер" as fin
+actor "Техник" as tech
+
+rectangle "Patient Management" as PM
+rectangle "Clinical Services" as CS
+rectangle "AI Analysis" as AI
+rectangle "Fintech" as FIN
+rectangle "Clinic Operations" as CO
+
+' События
+note "PatientRegistered" as e1
+note "AppointmentBooked" as e2
+note "MedicalTestCompleted" as e3
+note "AIAnalysisRequested" as e4
+note "AIAnalysisCompleted" as e5
+note "LoanAgreementCreated" as e6
+note "PaymentProcessed" as e7
+note "InvoiceGenerated" as e8
+note "EquipmentServiced" as e9
+
+reg -> e1 : инициирует
+PM -> e1 : публикует
+e1 --> FIN : подписчик (проверка клиента)
+e1 --> BI : подписчик (аналитика регистраций)
+
+doc -> e2 : инициирует
+PM -> e2 : публикует
+e2 --> CS : подписчик (подготовка к приёму)
+
+doc -> e3 : после исследования
+CS -> e3 : публикует
+e3 --> AI : подписчик (запуск анализа, если нужен)
+e3 --> FIN : подписчик (выставление счёта)
+
+AI -> e4 : запрос на анализ
+CS -> e4 : публикует (или AI сам?)
+AI -> e4 : подписчик
+
+AI -> e5 : завершение анализа
+AI -> e5 : публикует
+e5 --> CS : подписчик (обновление мед. записи)
+e5 --> BI : подписчик (статистика по ИИ)
+
+fin -> e6 : создание кредитного договора
+FIN -> e6 : публикует
+e6 --> BI : подписчик (финансовая отчётность)
+
+fin -> e7 : поступление платежа
+FIN -> e7 : публикует
+e7 --> CS : подписчик (подтверждение оплаты)
+e7 --> BI : подписчик
+
+CS -> e8 : выставление счёта
+CS -> e8 : публикует
+e8 --> FIN : подписчик (обработка платежа)
+
+tech -> e9 : обслуживание оборудования
+CO -> e9 : публикует
+e9 --> CS : подписчик (доступность оборудования)
+
+@enduml

@@ -1,0 +1,42 @@
+@startuml bounded-contexts
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Bounded Contexts – «Будущее 2.0»
+
+System_Boundary(patient_mgmt, "Patient Management") {
+    Container(pm_service, "Регистратура и картотека", "Java/Kotlin", "Управление пациентами, направлениями, записями на приём")
+}
+
+System_Boundary(clinical_svcs, "Clinical Services") {
+    Container(cs_service, "Медицинские услуги", "Java/Kotlin", "Проведение исследований, диагнозы, лечение")
+}
+
+System_Boundary(ai_analysis, "AI Analysis") {
+    Container(ai_service, "ИИ-сервисы", "Python", "Анализ изображений, NLP, поддержка принятия решений")
+}
+
+System_Boundary(fintech, "Fintech") {
+    Container(fin_service, "Банковские сервисы", "Golang/Java", "Счета, кредиты, платежи")
+}
+
+System_Boundary(clinic_ops, "Clinic Operations") {
+    Container(co_service, "Управление ресурсами", "Java", "Персонал, оборудование, инвентаризация")
+}
+
+System_Boundary(bi_platform, "Business Intelligence") {
+    Container(bi_service, "Портал самообслуживания", "React/Node.js", "Отчётность, аналитика")
+}
+
+' Взаимодействия между контекстами через события (асинхронные)
+Rel(pm_service, cs_service, "События: PatientRegistered, AppointmentBooked")
+Rel(cs_service, ai_service, "События: MedicalTestCompleted, AIAnalysisRequested")
+Rel(ai_service, cs_service, "Событие: AIAnalysisCompleted")
+Rel(fin_service, pm_service, "Событие: PatientRegistered (для кредитного скоринга)")
+Rel(cs_service, fin_service, "Событие: InvoiceGenerated (для биллинга)")
+Rel(co_service, cs_service, "Событие: EquipmentReady, StaffAssigned")
+Rel(pm_service, bi_platform, "События для аналитики (без мед. данных)")
+Rel(cs_service, bi_platform, "События по процессам (не мед. данные)")
+Rel(fin_service, bi_platform, "Финансовые события")
+Rel(co_service, bi_platform, "События по ресурсам")
+
+@enduml
