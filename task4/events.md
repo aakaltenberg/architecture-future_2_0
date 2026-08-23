@@ -1,0 +1,14 @@
+# Каталог доменных событий
+
+| Название события          | Контекст-источник      | Семантика                                                   | Минимальный контракт (ключевые поля)                         | Подписчики                            |
+|---------------------------|------------------------|-------------------------------------------------------------|-------------------------------------------------------------|---------------------------------------|
+| PatientRegistered         | Patient Management     | Новый пациент зарегистрирован в системе                     | patientId, fullName, birthDate, timestamp                   | Fintech, BI                           |
+| AppointmentBooked         | Patient Management     | Запись пациента на приём создана                            | appointmentId, patientId, scheduledTime, doctorId            | Clinical Services                     |
+| MedicalTestCompleted      | Clinical Services      | Медицинское исследование завершено, результат готов         | testId, patientId, testType, result, completedAt             | AI Analysis (если нужен анализ), Fintech (для выставления счёта) |
+| AIAnalysisRequested       | Clinical Services      | Запрос на проведение ИИ-анализа                             | jobId, testId, inputDataRef, timestamp                       | AI Analysis                           |
+| AIAnalysisCompleted       | AI Analysis            | ИИ-анализ завершён, результат получен                       | jobId, testId, outputDataRef, confidenceScore, completedAt   | Clinical Services, BI                |
+| InvoiceGenerated          | Clinical Services      | Выставлен счёт за оказанные услуги                          | invoiceId, patientId, amount, dueDate                        | Fintech                               |
+| LoanAgreementCreated      | Fintech                | Создан кредитный договор                                    | agreementId, patientId, amount, rate, term                   | BI                                    |
+| PaymentProcessed          | Fintech                | Платёж по счёту/кредиту обработан                           | paymentId, accountId, amount, timestamp                      | Clinical Services (подтверждение оплаты), BI |
+| EquipmentServiced         | Clinic Operations      | Оборудование прошло обслуживание                            | equipmentId, serviceDate, status                             | Clinical Services                     |
+| StaffAssigned             | Clinic Operations      | Сотрудник назначен на смену/приём                           | staffId, shiftId, assignmentDate                             | Clinical Services                     |

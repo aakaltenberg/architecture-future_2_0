@@ -1,0 +1,62 @@
+@startuml c4-container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title C4 Container Diagram - "Будущее 2.0" (TO BE)
+
+Person(business_user, "Бизнес-пользователь", "Создаёт отчёты, анализирует данные")
+Person(developer, "Разработчик домена", "Публикует данные и события")
+
+System_Boundary(portal_boundary, "Портал самообслуживания") {
+    Container(portal, "Self-Service BI Portal", "React, Node.js", "Веб-приложение для создания отчётов и дашбордов")
+}
+
+System_Boundary(platform_boundary, "Data Platform (централизованная)") {
+    Container(ingestion, "Data Ingestion", "Kafka Connect, Debezium", "Захват данных из источников (CDC, API, файлы)")
+    Container(event_bus, "Event Bus", "Apache Kafka", "Центральная событийная шина")
+    Container(stream_proc, "Stream Processing", "Flink, ksqlDB", "Обработка потоков в реальном времени")
+    Container(batch_proc, "Batch Processing", "Spark", "Пакетная обработка больших объёмов")
+    Container(data_lake, "Data Lake", "Object Storage, S3", "Хранение сырых данных в Parquet/Avro")
+    Container(data_warehouse, "Data Warehouse", "ClickHouse, Greenplum", "Обработанные данные, быстрые аналитические запросы")
+    Container(data_catalog, "Data Catalog & Governance", "OpenMetadata", "Каталог данных, lineage, управление доступом")
+}
+
+System_Boundary(domains_boundary, "Доменные сервисы") {
+    Container(fintech, "Финтех-домен", "Golang, Java", "Банковские сервисы, кредиты, счета")
+    Container(medical, "Медицинский домен", "Java/Kotlin", "Управление пациентами, медицинские записи")
+    Container(ai, "ИИ-домен", "Python", "Сервисы ИИ для анализа изображений, NLP")
+}
+
+System_Boundary(legacy_boundary, "Legacy (временные мосты)") {
+    Container(legacy_dwh, "Legacy DWH", "SQL Server 2008", "Устаревшее хранилище, мигрирует")
+    Container(legacy_esb, "Legacy ESB", "Apache Camel", "Старая шина, используется для совместимости")
+    Container(legacy_bi, "Legacy BI", "Power BI", "Старые отчёты, будут заменены")
+}
+
+Rel(business_user, portal, "Запрашивает отчёты")
+Rel(developer, ingestion, "Публикует данные и события")
+
+Rel(portal, data_warehouse, "SQL/API")
+Rel(portal, data_catalog, "Поиск метаданных")
+Rel(portal, event_bus, "Подписка на события")
+
+Rel(ingestion, event_bus, "Публикация событий")
+Rel(event_bus, stream_proc, "Потоковая обработка")
+Rel(event_bus, batch_proc, "Пакетная загрузка")
+Rel(data_lake, batch_proc, "Источник для обработки")
+Rel(stream_proc, data_warehouse, "Результаты")
+Rel(batch_proc, data_warehouse, "Результаты")
+Rel(data_warehouse, portal, "Данные для отчётов")
+
+Rel(fintech, event_bus, "Доменные события")
+Rel(medical, event_bus, "Доменные события")
+Rel(ai, event_bus, "Доменные события")
+
+Rel(fintech, medical, "Синхронные API (ограниченно)")
+Rel(medical, ai, "Синхронные API")
+
+Rel(legacy_dwh, ingestion, "Пакетная выгрузка")
+Rel(legacy_esb, ingestion, "Мост для legacy-интеграций")
+Rel(legacy_bi, legacy_dwh, "Доступ к данным")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,26 @@
+@startuml c4-component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title C4 Component Diagram - Data Platform
+
+Container_Boundary(platform, "Data Platform") {
+    Component(ingestion_service, "Ingestion Service", "Kafka Connect", "Подключение к источникам, валидация, публикация в Kafka")
+    Component(kafka_cluster, "Kafka Cluster", "Event Bus", "Гарантированная доставка, партиционирование")
+    Component(flink_jobs, "Flink Jobs", "Stream Processor", "Обработка потоков, оконные агрегации")
+    Component(spark_jobs, "Spark Jobs", "Batch Processor", "Пакетные ETL/ELT, backfill")
+    Component(object_storage, "Object Storage", "Data Lake", "Хранение сырых данных")
+    Component(clickhouse, "ClickHouse", "Data Warehouse", "Serving layer, колоночное хранение")
+    Component(metadata, "OpenMetadata", "Catalog & Governance", "Управление схемами, качеством, lineage")
+    Component(security, "IAM & VPC", "Security", "Аутентификация, авторизация, сетевая изоляция")
+}
+
+Rel(ingestion_service, kafka_cluster, "Публикует события")
+Rel(kafka_cluster, flink_jobs, "Потоковая обработка")
+Rel(kafka_cluster, spark_jobs, "Пакетная обработка")
+Rel(object_storage, spark_jobs, "Чтение сырых данных")
+Rel(flink_jobs, clickhouse, "Запись результатов")
+Rel(spark_jobs, clickhouse, "Запись результатов")
+Rel(clickhouse, metadata, "Регистрация схем")
+Rel(metadata, security, "Проверка политик доступа")
+
+@enduml

@@ -1,0 +1,24 @@
+output "instance_id" {
+  description = "ID виртуальной машины"
+  value       = yandex_compute_instance.this.id
+}
+
+output "instance_ip" {
+  description = "Публичный IP-адрес ВМ"
+  value       = yandex_compute_instance.this.network_interface.0.nat_ip_address
+}
+
+output "instance_name" {
+  description = "Имя виртуальной машины"
+  value       = yandex_compute_instance.this.name
+}
+
+output "boot_disk_id" {
+  description = "ID загрузочного диска"
+  value       = yandex_compute_instance.this.boot_disk.0.disk_id
+}
+
+output "additional_disk_id" {
+  description = "ID дополнительного диска"
+  value       = yandex_compute_disk.additional.id
+}

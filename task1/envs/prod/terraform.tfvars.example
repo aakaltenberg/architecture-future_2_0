@@ -1,0 +1,14 @@
+yc_cloud_id  = "xxx"
+yc_folder_id = "xxx"
+
+vm_name       = "prod-vm"
+zone          = "ru-central1-c"
+image_id      = "xxx"
+cores         = 8
+memory        = 16
+boot_disk_size = 100
+disk_size     = 500
+subnet_id     = "xxx"
+ssh_key       = "xxx"
+ssh_user      = "ubuntu"
+assign_public_ip = false
